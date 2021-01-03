@@ -1,0 +1,26 @@
+Steps followed for the implimentation of the module are given below:
+
+1-downloaded nginx to use as a server.
+2-Got the code for the skeleton of the website from github.
+3-Started to design the layout of the website which includes the positioning of the name , amount lable and text box, lables and the dropdown menus for the currencies, submit button, the history table and the result section for the website.
+4-To insert data in the dropdown menus i wrote the javaScript code.
+	4.1- Downloaded jquery for the better implimentation of the module.
+	4.2- To do so i downloaded a text file which included names and abbriviations of all the currencies existing.
+	4.3- Changed the extension from txt to json because from json files data can be directly extracted.
+	4.4- Data taken from json is extracted in a 2d array so $each command was used to move to every index and get data in a one d array(a single row).
+	4.5- Viewed the code to append data in the dropdown menu from w3schools and implimented it for the desired outcome.(Same for both convert from and to dropdown menus)
+5- Creating the functionality of the Submit button.
+	5.1- To get results accourding to the real time rates of the currency i found an external free api for the currency convertor(https://free.currencyconverterapi.com/).
+	5.2- Got a free api key and put it in te format of the api url(https://free.currconv.com/api/v7/convert?q=USD_PKR&compact=ultra&apiKey=c90c1b0b2659fdfe88d4)
+		5.2.1- It requies the abbriviations of the currency to run. so they were extracted and request is sent.
+	5.3- Api request returns a result of a single comparison because the amount to be converted is not sent in the link.
+	5.4- The result and the amount entered by the user in the text box are in the string format. to get the final result both are converted to float and int and multiplied.
+	5.5- The result is displayed in the black outline box below.
+ 	5.6- History table include of the four columns convert from and to , amount to be converted and the result. After every convesion data is also displayed in the history table.
+	5.7- A Counter is kept to delete the entery and replace it with the latest conversion done on the webpage.
+6- Formarting is done.
+7- Logo of our website is added.
+8- Uploaded the data to the free website hosting service neosities.
+9- link to the website is given below.
+https://ahsan.neocities.org/currency%20convertor/index.html
+	

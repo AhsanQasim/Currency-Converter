@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- favicon code
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<link rel="icon" type="image/png" href="C:\Users\Ahsan C\Downloads\Compressed\nginx-1.16.0\nginx-1.16.0\html\favicon.jpg">
+
+  <!-- Basic Page Needs
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  	<meta charset="utf-8">
+  	<title>Currency Converter</title>
+  	<meta name="description" content="">
+  	<meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  	<link href="//fonts.googleapis.com/css?family=Arial:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  	<link rel="stylesheet" href="css/normalize.css">
+  	<link rel="stylesheet" href="css/skeleton.css">
+
+
+
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+<!-- Setting the background
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<style>
+body { 
+  background-image: url('https://images.unsplash.com/photo-1527439461966-e2ffeb23deb3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: bottom right;
+  background-size: 70% 70%;
+  
+}
+</style>
+
+
+  <!-- Javascript code load options on the dropdown menus 
+  -->
+<p id="demo"></p>
+  <script>
+  	$( document ).ready(function() {
+  		count_history = 0
+  		MAX_COUNT = 5
+  		$.getJSON("currency-symbols.json", function(json) {
+  			// $each gives a row from the 2D array. 
+  			// data from json already decoded
+
+  				$.each(json, function(index, value) {   
+  					$('#convert_from')
+  					.append($("<option></option>")
+  						.attr("value",value["abbreviation"])
+  						.text(value["currency"])); 
+  					$('#convert_to')
+  					.append($("<option></option>")
+  						.attr("value",value["abbreviation"])
+  						.text(value["currency"])); 
+  					// convert to and from are the ids to the labels
+
+  			});
+  		});
+ // function on pressing the button
+  		$("#submit_button").click(function(e) {
+  			e.preventDefault();
+  			$.ajax({
+  				type: "GET",
+  				// url to the api which provides the result fot the values
+  				
+  				url: "https://free.currconv.com/api/v7/convert?q="+$('#convert_from').find(":selected").val()+"_"+$('#convert_to').find(":selected").val()+"&compact=ultra&apiKey=c90c1b0b2659fdfe88d4",
+  				success: function(result) {
+  					$.each(result, function(index, value) {
+  						// converting to float as the result is in string
+  						var value=parseFloat(value)*parseInt($('#currency_amount').val());
+  						
+  						$('#result_conversion').text(value)
+  						$("#history_table").append("<tr><td>"+$('#convert_from').find(":selected").val()+"</td><td>"+$('#convert_to').find(":selected").val()+"</td><td>"+$('#currency_amount').val()+"</td><td>"+$('#result_conversion').text()+"</td></tr>")
+  						count_history += 1
+  						if (count_history == MAX_COUNT){
+  							document.getElementById("history_table").deleteRow(1);
+  							count_history = 4
+  						}
+  					});
+  				},
+  				error: function(result) {
+  					alert('error');
+  				}
+  			});
+  		});
+  	});
+
+  </script>
+
+
+</head>
+<body>
+
+<div id="container">
+    <div class="image-container">
+        <img src="https://i.ibb.co/MMV0cNV/Coin-open-index.png" alt="A image" height="100" width="150"/>
+    </div>
+</div>
+  <!-- Primary Page Layout
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  	<div class="container">
+  		<div class="row">
+  			
+  			<div class="one-half column" style="margin-top: 10%">
+
+  				<h1><b>CURRENCY CONVERSION PORTAL</b></h1>
+
+  				<form>
+  					<div class="row">
+  						  <!-- Making the layout for the inputs of the user.
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  						<div class="four columns">
+  							<label for="currency_amount">Enter Amount:</label>
+
+  							<input class="u-full-width" type="text" placeholder="10000" id="currency_amount">
+  						</div>
+  						<div class="four columns">
+  							<label for="convert_from">Convert From:</label>
+  							<select class="u-full-width" id="convert_from">
+  							</select>
+  						</div>
+  						<div class="four columns">
+  							<label for="convert_to">Convert To:</label>
+  							<select class="u-full-width" id="convert_to">
+  							</select>
+  						</div>
+  					</div>
+  					<input class="button-primary" type="submit" value="Submit" id = "submit_button">
+  					<div class="row">
+  						<label for="result_conversion">RESULT:</label>
+
+  						<div class="six columns" id="result_conversion"style="border:1px solid black;">
+  							&nbsp&nbsp
+  						</div>
+  					</div>
+  				</form>
+  			</div>
+  			  <!-- To create a history table.
+  	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  			<div class="one-half column" style="margin-top: -8%; left: 100px">
+  				<table style="width:100%" id="history_table">
+  					<tr>
+  						<th>From</th>
+  						<th>To</th> 
+  						<th>Amount</th>
+  						<th>Result</th>
+  					</tr>  					
+  				</table>
+  			</div>
+
+<!-- End Document
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
